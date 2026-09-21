@@ -1,0 +1,6 @@
+{
+  "name": "Mridalini Consulting",
+  "description": "Gatewaywala: Complete payment gateway onboarding partner for small businesses, individuals, NGOs, and startups. Fast approval and error fixing for Razorpay, Cashfree, CCAvenue and more.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
