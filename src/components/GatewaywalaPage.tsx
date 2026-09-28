@@ -41,55 +41,21 @@ export const GatewaywalaPage: React.FC<GatewaywalaPageProps> = ({ onBackToHome }
   const [inquiryIssue, setInquiryIssue] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  // Strictly enforce no-indexing and robots meta tag in document head
+  // Keep title updated and scroll to top
   useEffect(() => {
-    // Save original title
     const prevTitle = document.title;
     document.title = 'Gatewaywala – Payment Gateway Setup Advisory | Mridalini Consulting';
-
-    // Add or update robots meta tag to strictly prevent crawling and indexing
-    let robotsMeta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
-    let createdRobotsMeta = false;
-    if (!robotsMeta) {
-      robotsMeta = document.createElement('meta');
-      robotsMeta.name = 'robots';
-      document.head.appendChild(robotsMeta);
-      createdRobotsMeta = true;
-    }
-    const prevRobotsContent = robotsMeta.content;
-    robotsMeta.content = 'noindex, nofollow, noarchive, nosnippet';
-
-    // Googlebot specific meta tag
-    let googlebotMeta = document.querySelector('meta[name="googlebot"]') as HTMLMetaElement | null;
-    let createdGooglebotMeta = false;
-    if (!googlebotMeta) {
-      googlebotMeta = document.createElement('meta');
-      googlebotMeta.name = 'googlebot';
-      document.head.appendChild(googlebotMeta);
-      createdGooglebotMeta = true;
-    }
-    const prevGooglebotContent = googlebotMeta.content;
-    googlebotMeta.content = 'noindex, nofollow';
-
-    // Scroll to top upon navigation
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('config', 'AW-10895732953', {
+        page_path: '/gatewaywala',
+        page_title: 'Gatewaywala – Payment Gateway Setup Advisory'
+      });
+    }
 
     return () => {
       document.title = prevTitle;
-      if (robotsMeta) {
-        if (createdRobotsMeta) {
-          robotsMeta.remove();
-        } else {
-          robotsMeta.content = prevRobotsContent;
-        }
-      }
-      if (googlebotMeta) {
-        if (createdGooglebotMeta) {
-          googlebotMeta.remove();
-        } else {
-          googlebotMeta.content = prevGooglebotContent;
-        }
-      }
     };
   }, []);
 
@@ -186,6 +152,14 @@ export const GatewaywalaPage: React.FC<GatewaywalaPageProps> = ({ onBackToHome }
     e.preventDefault();
     setSubmitted(true);
 
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'conversion', {
+        send_to: 'AW-10895732953',
+        event_category: 'inquiry_submit',
+        event_label: inquiryGateway || 'gateway_advisory'
+      });
+    }
+
     const message = encodeURIComponent(
       `*Gatewaywala Setup Inquiry*\n\n` +
       `👤 *Name:* ${inquiryName || 'Merchant'}\n` +
@@ -211,12 +185,12 @@ export const GatewaywalaPage: React.FC<GatewaywalaPageProps> = ({ onBackToHome }
             <span>Back to Mridalini Consulting</span>
           </button>
 
-          {/* Robots.txt & Private Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs text-slate-600">
-            <Lock className="w-3.5 h-3.5 text-amber-600" />
-            <span className="font-semibold text-slate-700">Gatewaywala</span>
+          {/* Partner & Live Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs text-emerald-800">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span className="font-semibold text-slate-800">Gatewaywala</span>
             <span className="text-slate-300">•</span>
-            <span className="text-[11px] text-slate-500 font-mono">robots.txt: Disallow</span>
+            <span className="text-[11px] text-emerald-700 font-medium">Payment Gateway Advisory</span>
           </div>
         </div>
       </header>
@@ -584,14 +558,6 @@ export const GatewaywalaPage: React.FC<GatewaywalaPageProps> = ({ onBackToHome }
               <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
               <span>Chat Directly on WhatsApp</span>
             </a>
-          </div>
-        </div>
-
-        {/* Crawler / Indexing Notice */}
-        <div className="max-w-2xl mx-auto text-center border-t border-slate-200 pt-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-200/70 text-slate-600 text-[11px] font-mono">
-            <Lock className="w-3 h-3 text-slate-500" />
-            <span>Search Exclusion: &lt;meta name="robots" content="noindex, nofollow"&gt; • robots.txt: Disallow /gatewaywala</span>
           </div>
         </div>
       </main>

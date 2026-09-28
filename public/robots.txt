@@ -1,8 +1,13 @@
 # robots.txt
 User-agent: *
-Disallow: /gatewaywala
-Disallow: /gatewaywala/
-Disallow: /gatewaywala/*
+Allow: /
+Allow: /gatewaywala
 
-# Allow public pages
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+
+User-agent: Googlebot
 Allow: /

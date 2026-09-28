@@ -25,6 +25,14 @@ export const PayOnboardModal: React.FC<PayOnboardModalProps> = ({ isOpen, onClos
     e.preventDefault();
     setSubmitted(true);
 
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'conversion', {
+        send_to: 'AW-10895732953',
+        event_category: 'lead_form_submit',
+        event_label: formData.rejectedGateway || 'gateway_consultation'
+      });
+    }
+
     const message = encodeURIComponent(
       `*New Gateway Approval Request*\n\n` +
       `👤 *Name:* ${formData.name || 'Merchant'}\n` +
@@ -38,6 +46,14 @@ export const PayOnboardModal: React.FC<PayOnboardModalProps> = ({ isOpen, onClos
   };
 
   const handleWhatsAppDirect = () => {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'conversion', {
+        send_to: 'AW-10895732953',
+        event_category: 'whatsapp_direct_click',
+        event_label: formData.rejectedGateway || 'gateway_whatsapp'
+      });
+    }
+
     const fastMsg = encodeURIComponent(
       `Hi Gatewaywala! I need quick assistance getting my payment gateway approved.\n` +
       (formData.name ? `Name: ${formData.name}\n` : '') +

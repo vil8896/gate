@@ -16,10 +16,12 @@ import { LegalModal, LegalDocType } from './components/LegalModal';
 // Helper to test if current URL targets the Gatewaywala page
 const isGatewaywalaRoute = (): boolean => {
   if (typeof window === 'undefined') return false;
+  const hostname = window.location.hostname.toLowerCase();
   const path = window.location.pathname.toLowerCase();
   const hash = window.location.hash.toLowerCase();
 
   return (
+    hostname.includes('gatewaywala') ||
     path.startsWith('/gatewaywala') ||
     path.includes('gatewaywala') ||
     hash.startsWith('#/gatewaywala') ||
@@ -53,10 +55,20 @@ export default function App() {
     };
   }, []);
 
-  // Update browser tab title depending on the active page
+  // Update browser tab title and notify Google Ads tag (gtag) on page route
   useEffect(() => {
     if (currentPage === 'gatewaywala') {
       document.title = "Gatewaywala – Your Payment Gateway Partner | Get Approved & Onboarded";
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('config', 'AW-10895732953', {
+          page_path: '/gatewaywala',
+          page_title: 'Gatewaywala – Your Payment Gateway Partner'
+        });
+        window.gtag('event', 'page_view', {
+          page_path: '/gatewaywala',
+          page_title: 'Gatewaywala – Your Payment Gateway Partner'
+        });
+      }
     } else {
       document.title = "Mridalini Consulting – Business Guidance & Tech Setup (mridalini.com)";
     }
@@ -89,6 +101,13 @@ export default function App() {
   };
 
   const handleOpenWhatsApp = () => {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'conversion', {
+        send_to: 'AW-10895732953',
+        event_category: 'whatsapp_click',
+        event_label: 'hero_or_nav_whatsapp'
+      });
+    }
     const message = encodeURIComponent(
       "Hi Gatewaywala! My payment gateway application was rejected. I would like assistance getting approved and onboarded."
     );
